@@ -1,28 +1,45 @@
-# XyneriaUI — WindUI-based edition
+# XyneriaUI
 
-This is a Xyneria-branded wrapper around **WindUI**.
+A Xyneria-themed Roblox/Luau UI library built on a **locally vendored WindUI snapshot**.
 
-## Why this approach
+## No Footagesus CORE_URL
 
-WindUI already provides the difficult UI infrastructure: resizable windows, tabs, toggles, buttons, sliders, dropdowns, notifications, config persistence, themes, icons, mobile scaling, and an open/close button.
+The production file:
 
-`XyneriaUI_Wind.lua` keeps that engine but registers a custom Xyneria theme and exposes a small Xyneria convenience API.
+```text
+dist/XyneriaUI.lua
+```
 
-## Files
+contains the WindUI core and the Xyneria wrapper in one standalone file.
 
-- `XyneriaUI_Wind.lua` — Xyneria wrapper/library.
-- `XyneriaUI_Demo.lua` — safe interactive demo.
-- `LICENSE-WindUI.txt` — required upstream MIT attribution.
-- `README.md` — this file.
-
-## Quick start
-
-Host `XyneriaUI_Wind.lua` somewhere your Roblox Lua environment can reach.
-
-Then:
+After you upload this repository, your script only requests **your own** raw GitHub file:
 
 ```lua
-local XyneriaUI = loadstring(game:HttpGet("YOUR_XYNERIA_UI_URL"))()
+local XyneriaUI = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO/main/dist/XyneriaUI.lua"
+))()
+```
+
+It does not download WindUI from Footagesus at runtime.
+
+## Repository contents
+
+- Full WindUI repository under `vendor/WindUI/`
+- Original WindUI MIT license
+- Standalone `dist/XyneriaUI.lua`
+- Xyneria purple/pink theme
+- Xyneria wrapper API
+- Examples
+- Build script
+- Dependency audit
+- Upstream checksums
+
+## Quick example
+
+```lua
+local XyneriaUI = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/YOU/XyneriaUI/main/dist/XyneriaUI.lua"
+))()
 
 local App = XyneriaUI:CreateWindow({
     Title = "XYNERIA",
@@ -30,70 +47,28 @@ local App = XyneriaUI:CreateWindow({
     Version = "v1.0.0",
 })
 
-local Home = App:Tab({
-    Title = "Home",
-    Icon = "house",
-})
+local Home = App:Tab({ Title = "Home", Icon = "house" })
 
 Home:Button({
-    Title = "Run Action",
-    Icon = "play",
+    Title = "Test",
     Callback = function()
-        App:Notify("XYNERIA", "Button clicked.")
-    end,
-})
-
-Home:Toggle({
-    Title = "Example Toggle",
-    Value = false,
-    Callback = function(state)
-        print("Toggle:", state)
-    end,
-})
-
-Home:Slider({
-    Title = "Example Slider",
-    Step = 1,
-    Value = {
-        Min = 0,
-        Max = 100,
-        Default = 50,
-    },
-    Callback = function(value)
-        print("Slider:", value)
-    end,
-})
-
-Home:Dropdown({
-    Title = "Example Dropdown",
-    Values = { "A", "B", "C" },
-    Value = 1,
-    Callback = function(value)
-        print("Selected:", value)
+        App:Notify("XYNERIA", "Working.")
     end,
 })
 ```
 
-## Xyneria visual direction
+## Rebuild
 
-- Near-black / purple background.
-- Purple-to-pink gradient accents.
-- Rounded panels.
-- Compact left sidebar.
-- Top status tags.
-- User panel.
-- Draggable/resizable window.
-- RightShift toggle key.
-- Mobile-friendly floating X open button.
+After editing `src/XyneriaWrapper.lua`:
 
-## Upstream dependency
-
-The wrapper currently loads:
-
-```text
-https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua
+```bash
+python build/build.py
 ```
 
-For a production release, consider self-hosting a known-good WindUI snapshot rather than depending on the moving `main` branch.
+Commit the regenerated `dist/XyneriaUI.lua`.
 
-WindUI is licensed under MIT. Keep `LICENSE-WindUI.txt` with any distribution that includes or substantially incorporates WindUI.
+## Attribution
+
+WindUI is MIT licensed. Its license and attribution are intentionally preserved.
+
+See `THIRD_PARTY_NOTICES.md`, `LICENSES/WindUI-MIT.txt`, and `UPSTREAM.md`.
