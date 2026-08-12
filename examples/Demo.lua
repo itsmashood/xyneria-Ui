@@ -1,65 +1,67 @@
--- After uploading this repository, replace YOUR_GITHUB_USERNAME/YOUR_REPO.
 local XyneriaUI = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO/main/dist/XyneriaUI.lua"
+    "https://raw.githubusercontent.com/YOU/YOUR_REPO/main/dist/XyneriaUI.lua"
 ))()
 
 local App = XyneriaUI:CreateWindow({
     Title = "XYNERIA",
     Author = "EXPLOIT WITH CONFIDENCE.",
-    Version = "v1.0.0",
+    Version = "v3.0.0",
     Live = true,
 })
 
-local Home = App:Tab({
-    Title = "Home",
-    Icon = "house",
+local Home = App:Tab({ Title = "Home", Icon = "house" })
+
+Home:Paragraph({
+    Title = "Independent core",
+    Desc = "The UI, controls, state and config layer are provided by XyneriaUI itself.",
 })
 
 Home:Button({
-    Title = "Interactive Button",
-    Icon = "mouse-pointer-click",
+    Title = "Run Action",
     Callback = function()
-        App:Notify("XYNERIA", "The button works.", "sparkles", 3)
+        App:Notify("XYNERIA", "Action completed.")
     end,
 })
-
-Home:Space()
 
 Home:Toggle({
-    Title = "Interactive Toggle",
+    Title = "Feature",
     Value = false,
-    Flag = "ExampleToggle",
-    Callback = function(state)
-        print("[Xyneria] Toggle:", state)
+    Flag = "FeatureEnabled",
+    Callback = function(value)
+        print("feature", value)
     end,
 })
-
-Home:Space()
 
 Home:Slider({
-    Title = "Interface Scale",
-    Step = 0.05,
-    Value = {
-        Min = 0.70,
-        Max = 1.10,
-        Default = 1.00,
-    },
+    Title = "Power",
+    Min = 0,
+    Max = 100,
+    Value = 50,
+    Flag = "Power",
     Callback = function(value)
-        App:SetScale(value)
+        print("power", value)
     end,
 })
 
-local Settings = App:Tab({
-    Title = "Settings",
-    Icon = "settings",
-})
-
-Settings:Dropdown({
+Home:Dropdown({
     Title = "Mode",
-    Values = { "Normal", "Compact", "Showcase" },
-    Value = 1,
+    Values = {"Normal", "Fast", "Safe"},
+    Value = "Normal",
     Flag = "Mode",
-    Callback = function(value)
-        App:Notify("Mode", "Selected " .. tostring(value), "layers", 2)
+})
+
+local Settings = App:Tab({ Title = "Settings", Icon = "settings" })
+Settings:Keybind({
+    Title = "Action key",
+    Value = Enum.KeyCode.F,
+    Callback = function()
+        App:Pulse()
     end,
 })
+Settings:Colorpicker({
+    Title = "Example color",
+    Value = "#D85DFF",
+    Flag = "ExampleColor",
+})
+Settings:Button({ Title = "Save config", Callback = function() App:SaveConfig("default") end })
+Settings:Button({ Title = "Load config", Callback = function() App:LoadConfig("default") end })

@@ -1,31 +1,12 @@
 # Architecture
 
-## Runtime
+The project uses a small native module graph:
 
-Your script fetches one standalone file from **your own** GitHub repository:
+1. `Theme` defines visual tokens.
+2. `Util` provides instance creation, animation, safe callbacks and GUI-parent selection.
+3. `Config` stores registered flag values when executor filesystem functions are available.
+4. `Controls` implements elements directly with Roblox instances and input events.
+5. `Window` implements the shell, tabs, dialogs, open/close behavior and keyboard toggling.
+6. `XyneriaUI` exposes the script-facing API and notification host.
 
-```lua
-local XyneriaUI = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/YOU/XyneriaUI/main/dist/XyneriaUI.lua"
-))()
-```
-
-`dist/XyneriaUI.lua` already contains:
-
-1. the vendored WindUI core;
-2. WindUI's embedded standard icon packs;
-3. the Xyneria theme;
-4. the Xyneria wrapper API.
-
-There is no second request to a Footagesus WindUI `CORE_URL`.
-
-## Source layout
-
-- `dist/XyneriaUI.lua` — use this in scripts.
-- `src/` — Xyneria-specific source.
-- `vendor/WindUI/` — full upstream snapshot from the supplied ZIP.
-- `build/build.py` — reproducible standalone builder.
-- `examples/` — starter scripts.
-- `LICENSES/` — third-party licenses.
-
-The vendored upstream files are not edited. Patches for the standalone build happen only while generating `dist/XyneriaUI.lua`.
+The build script packages those modules into one file using an internal module loader. Source files remain individually editable.
