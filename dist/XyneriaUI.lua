@@ -1326,7 +1326,7 @@ function XyneriaUI:CreateWindow(options)
         window:Tag({Title=tostring(config.Version), Color=Theme.Surface, Border=true})
     end
     if config.Live ~= false then
-        window:Tag({Title=tostring(config.StatusTitle or "ALL SCRIPTS LIVE"), Color=Color3.fromHex("#101A16"), Border=true})
+        window:Tag({Title=tostring(config.StatusTitle or "FUCK ANTICHEAT"), Color=Color3.fromHex("#101A16"), Border=true})
     end
 
     local app = {
